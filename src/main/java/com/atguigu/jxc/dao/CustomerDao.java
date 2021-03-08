@@ -22,4 +22,7 @@ public interface CustomerDao {
 
     Integer deleteCustomer(Integer customerId);
 
+    List<Customer> getComboboxList(String q);
+
+
 }

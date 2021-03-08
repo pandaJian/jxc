@@ -16,8 +16,6 @@ public class PurchaseList {
   private Integer state;
   private Integer supplierId;
   private Integer userId;
-
   private String supplierName;
   private String trueName;
-
 }

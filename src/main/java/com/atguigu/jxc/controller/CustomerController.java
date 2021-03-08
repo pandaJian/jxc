@@ -3,9 +3,9 @@ package com.atguigu.jxc.controller;
 import com.atguigu.jxc.domain.ServiceVO;
 import com.atguigu.jxc.entity.Customer;
 import com.atguigu.jxc.service.CustomerService;
-import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,6 +22,12 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
+    //客户下拉列表查询
+    @PostMapping("getComboboxList")
+    public List<Customer> getComboboxList(String q){
+        List<Customer> getComboboxList = customerService.getComboboxList(q);
+        return getComboboxList;
+    }
 
     /**
      * 分页查询客户

@@ -6,7 +6,6 @@ import lombok.Data;
  */
 @Data
 public class PurchaseListGoods {
-
   private Integer purchaseListGoodsId;
   private Integer goodsId;
   private String goodsCode;
@@ -18,5 +17,4 @@ public class PurchaseListGoods {
   private double total;
   private Integer purchaseListId;
   private Integer goodsTypeId;
-
 }

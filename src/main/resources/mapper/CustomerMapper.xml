@@ -86,6 +86,13 @@
             customer_id = #{customerId}
     </select>
 
+    <select id="getComboboxList" resultMap="BaseResultMap">
+        select *
+        from `t_customer`
+        where customer_name
+        like CONCAT('%', #{q} ,'%')
+    </select>
+
     <delete id="deleteCustomer" parameterType="java.lang.Integer">
         DELETE FROM
         t_customer

@@ -5,10 +5,11 @@ import com.atguigu.jxc.domain.ServiceVO;
 import com.atguigu.jxc.domain.SuccessCode;
 import com.atguigu.jxc.entity.Log;
 import com.atguigu.jxc.entity.Supplier;
-import com.atguigu.jxc.service.SupplierService;
 import com.atguigu.jxc.service.LogService;
+import com.atguigu.jxc.service.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -78,4 +79,14 @@ public class SupplierServiceImpl implements SupplierService {
         }
         return new ServiceVO<>(SuccessCode.SUCCESS_CODE, SuccessCode.SUCCESS_MESS);
     }
+
+    @Override
+    public List<Supplier> getComboboxList(String q) {
+        if (StringUtils.isEmpty(q)){
+            return supplierDao.getLists();
+        }
+        List<Supplier> suppliers = supplierDao.getComboboxList(q);
+        return suppliers;
+    }
+
 }

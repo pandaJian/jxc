@@ -3,9 +3,9 @@ package com.atguigu.jxc.controller;
 import com.atguigu.jxc.domain.ServiceVO;
 import com.atguigu.jxc.entity.Supplier;
 import com.atguigu.jxc.service.SupplierService;
-import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,6 +21,13 @@ public class SupplierController {
 
     @Autowired
     private SupplierService supplierService;
+
+    //供应商下拉列表查询
+    @PostMapping("getComboboxList")
+    public List<Supplier> getComboboxList(String q){
+        List<Supplier> comboboxList = supplierService.getComboboxList(q);
+        return comboboxList;
+    }
 
     /**
      * 分页查询供应商
