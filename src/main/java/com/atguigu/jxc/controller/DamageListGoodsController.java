@@ -51,7 +51,7 @@ public class DamageListGoodsController {
      */
     @RequestMapping("/goodsList")
     @RequiresPermissions(value = "报损报溢查询")
-    public Map<String,Object> goodsList(Integer damageListId) {
+    public Map<String,Object> goodsList9(Integer damageListId) {
         return damageListGoodsService.goodsList(damageListId);
     }
 }
