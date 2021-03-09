@@ -1,5 +1,6 @@
 package com.atguigu.jxc.controller;
 
+import com.atguigu.jxc.domain.CountVo;
 import com.atguigu.jxc.domain.SaleVo;
 import com.atguigu.jxc.domain.ServiceVO;
 import com.atguigu.jxc.service.SaleListGoodsService;
@@ -27,6 +28,12 @@ public class SaleListGoodsController {
     public List<SaleVo> getSaleDataByDay(String sTime, String eTime){
         List<SaleVo>  saleVos = saleListGoodsService.getSaleDataByDay(sTime,eTime);
         return saleVos;
+    }
+
+    @PostMapping("/count")
+    public List<CountVo> count(String sTime, String eTime , Integer goodsTypeId, String codeOrName){
+        List<CountVo> countVos = saleListGoodsService.count(sTime,eTime,goodsTypeId,codeOrName);
+        return countVos;
     }
 
     @PostMapping("/updateState")

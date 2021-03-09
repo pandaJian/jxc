@@ -1,16 +1,15 @@
 package com.atguigu.jxc.service.impl;
 
 import com.atguigu.jxc.dao.SaleListGoodsDao;
-import com.atguigu.jxc.domain.SaleVo;
-import com.atguigu.jxc.domain.ServiceVO;
-import com.atguigu.jxc.domain.SuccessCode;
-import com.atguigu.jxc.domain.TongJi;
+import com.atguigu.jxc.domain.*;
 import com.atguigu.jxc.service.SaleListGoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author : panda Jian
@@ -37,16 +36,53 @@ public class SaleListGoodsServiceImpl implements SaleListGoodsService {
         List<TongJi> tongJi = saleListGoodsDao.queryJinHuo(sTime,eTime);
         List<TongJi> tongJi1 = saleListGoodsDao.queryShouMai(sTime, eTime);
 
-        int size1 = tongJi.size();
-        List<SaleVo> list = new ArrayList<>();
-        for (int i = 1; i < size1 - 1; i++) {
-            SaleVo saleVo = new SaleVo();
-            saleVo.setDate(tongJi.get(i-1).getDate());
-            saleVo.setSaleTotal(tongJi1.get(i-1).getQian());
-            saleVo.setPurchasingTotal(tongJi.get(i-1).getQian());
-            saleVo.setProfit(tongJi1.get(i-1).getQian() - tongJi.get(i-1).getQian());
-            list.add(saleVo);
+        List<String> date = tongJi.stream().map(TongJi::getDate).collect(Collectors.toList());
+        List<String> date1 = tongJi1.stream().map(TongJi::getDate).collect(Collectors.toList());
+
+        List<String> strings = new ArrayList<>();
+        for (String s : date) {
+            for (String s1 : date1) {
+                if (s.equals(s1)){
+                    strings.add(s);
+                }
+                strings.add(s);
+                strings.add(s1);
+            }
         }
-        return list;
+        HashSet<String> strings1 = new HashSet<>(strings);
+        ArrayList<String> strings2 = new ArrayList<>(strings1);
+        System.out.println("strings2 = " + strings2);
+
+
+
+//        System.out.println(tongJi);
+//        System.out.println(tongJi1);
+//        SaleVo saleVo = new SaleVo();
+//        for (TongJi ji : tongJi) {
+//            saleVo.setPurchasingTotal(ji.getQian());
+//            saleVo.setDate(ji.getDate());
+//        }
+//        for (TongJi ji : tongJi1) {
+//            saleVo.setSaleTotal(ji.getQian());
+//        }
+//        int size1 = tongJi.size();
+//        List<SaleVo> list = new ArrayList<>();
+//        for (int i = 1; i < 10; i++) {
+//            SaleVo saleVo = new SaleVo();
+//            saleVo.setDate(tongJi.get(i-1).getDate());
+//            saleVo.setSaleTotal(tongJi1.get(i-1).getQian());
+//            saleVo.setPurchasingTotal(tongJi.get(i-1).getQian());
+//            saleVo.setProfit(tongJi1.get(i-1).getQian() - tongJi.get(i-1).getQian());
+//            list.add(saleVo);
+//        }
+        return null;
+    }
+
+    @Override
+    public List<CountVo> count(String sTime, String eTime, Integer goodsTypeId, String codeOrName) {
+
+        List<CountVo> countVos = saleListGoodsDao.count(sTime,eTime,goodsTypeId,codeOrName);
+        return countVos;
+
     }
 }

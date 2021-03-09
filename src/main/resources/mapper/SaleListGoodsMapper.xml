@@ -25,4 +25,34 @@
                 t.sale_date &gt;= #{sTime}
               and t.sale_date &lt;= #{eTime}
     </select>
+
+    <select id="count" resultType="com.atguigu.jxc.domain.CountVo">
+        select t1.`sale_number` number,t1.`sale_date` `date`,
+        t3.`customer_name` supplierName,t2.`goods_code` code,t2.`goods_name` name,
+        t2.`goods_model` model,t4.`goods_type_name` goodsType,t2.`goods_unit` unit,
+        t2.`price`,t2.`goods_num` num,t2.`total`
+        from t_sale_list t1
+        left join t_sale_list_goods t2
+        on t1.`sale_list_id` = t2.`sale_list_id`
+        left join t_customer t3
+        on t1.`customer_id` = t3.`customer_id`
+        left join t_goods_type t4
+        on t2.`goods_type_id` = t4.`goods_type_id`
+        <where>
+            <if test="goodsTypeId != null">
+                t4.`goods_type_id` like CONCAT('%', #{goodsTypeId} ,'%')
+            </if>
+            <if test="codeOrName != null">
+                and t2.`goods_code` like CONCAT('%', #{codeOrName} ,'%')
+                or t2.`goods_name` like CONCAT('%', #{codeOrName} ,'%')
+            </if>
+            <if test="sTime != null">
+                and t1.`sale_date` &gt;= #{sTime}
+            </if>
+            <if test="eTime != null">
+                and t1.`sale_date` &lt;= #{eTime}
+            </if>
+        </where>
+    </select>
+
 </mapper>

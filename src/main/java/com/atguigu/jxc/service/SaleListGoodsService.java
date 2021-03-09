@@ -1,6 +1,7 @@
 package com.atguigu.jxc.service;
 
 
+import com.atguigu.jxc.domain.CountVo;
 import com.atguigu.jxc.domain.SaleVo;
 import com.atguigu.jxc.domain.ServiceVO;
 
@@ -15,4 +16,6 @@ public interface SaleListGoodsService {
     ServiceVO updateState(Integer saleListId);
 
     List<SaleVo> getSaleDataByDay(String sTime, String eTime);
+
+    List<CountVo> count(String sTime, String eTime, Integer goodsTypeId, String codeOrName);
 }

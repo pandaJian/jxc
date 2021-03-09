@@ -1,5 +1,6 @@
 package com.atguigu.jxc.dao;
 
+import com.atguigu.jxc.domain.CountVo;
 import com.atguigu.jxc.entity.Customer;
 import org.apache.ibatis.annotations.Param;
 
@@ -25,4 +26,5 @@ public interface CustomerDao {
     List<Customer> getComboboxList(String q);
 
 
+    List<CountVo> count(String sTime, String eTime, Integer goodsTypeId, String codeOrName);
 }

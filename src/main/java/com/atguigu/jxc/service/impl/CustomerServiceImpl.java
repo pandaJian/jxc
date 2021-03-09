@@ -1,6 +1,7 @@
 package com.atguigu.jxc.service.impl;
 
 import com.atguigu.jxc.dao.CustomerDao;
+import com.atguigu.jxc.domain.CountVo;
 import com.atguigu.jxc.domain.ServiceVO;
 import com.atguigu.jxc.domain.SuccessCode;
 import com.atguigu.jxc.entity.Customer;
@@ -80,6 +81,12 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public List<Customer> getComboboxList(String q) {
         return customerDao.getComboboxList(q);
+    }
+
+    @Override
+    public List<CountVo> count(String sTime, String eTime, Integer goodsTypeId, String codeOrName) {
+        List<CountVo> countVos = customerDao.count(sTime,eTime,goodsTypeId,codeOrName);
+        return countVos;
     }
 
 }
