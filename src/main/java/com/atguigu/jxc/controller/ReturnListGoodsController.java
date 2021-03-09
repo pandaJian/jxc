@@ -1,5 +1,6 @@
 package com.atguigu.jxc.controller;
 
+import com.atguigu.jxc.domain.CountVo;
 import com.atguigu.jxc.service.PurchaseListGoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -7,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author : panda Jian
@@ -15,15 +15,16 @@ import java.util.Map;
  * Description
  */
 @RestController
-@RequestMapping("/purchaseListGoods")
+@RequestMapping("/returnListGoods")
 public class ReturnListGoodsController {
 
     @Autowired
     private PurchaseListGoodsService purchaseListGoodsService;
 
-    @PostMapping("list")
-    public List<Map<String, Object>> list(String purchaseNumber, Integer supplierId, Integer state, String sTime, String eTime){
-        List<Map<String, Object>> map = purchaseListGoodsService.queryBy(purchaseNumber, supplierId, state, sTime, eTime);
-        return map;
+    @PostMapping("/count")
+    public List<CountVo> count(String sTime, String eTime , Integer goodsTypeId, String codeOrName){
+        List<CountVo> countVos = purchaseListGoodsService.count(sTime,eTime,goodsTypeId,codeOrName);
+        return countVos;
     }
+
 }

@@ -1,5 +1,8 @@
 package com.atguigu.jxc.service;
 
+import com.atguigu.jxc.domain.CountVo;
+import com.atguigu.jxc.domain.ServiceVO;
+
 import java.util.List;
 import java.util.Map;
 
@@ -9,5 +12,9 @@ import java.util.Map;
  * Description
  */
 public interface PurchaseListGoodsService {
-    public List<Map<String, Object>> queryBy(String purchaseNumber, Integer supplierId, Integer state, String sTime, String eTime);
+    public Map<String, Object> queryBy(String purchaseNumber, Integer supplierId, Integer state, String sTime, String eTime);
+
+    ServiceVO updateState(Integer purchaseListId);
+
+    List<CountVo> count(String sTime, String eTime, Integer goodsTypeId, String codeOrName);
 }

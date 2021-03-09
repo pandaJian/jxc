@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.jxc.dao.SaleListGoodsDao">
+
+    <update id="updateState">
+        update t_sale_list set state = 1 where sale_list_id = #{saleListId}
+    </update>
+
+
+
+    <select id="queryJinHuo" resultType="com.atguigu.jxc.domain.TongJi">
+            select t.`amount_payable` qian,t.`purchase_date` `date`
+            from t_purchase_list t
+            where
+                t.purchase_date &gt;= #{sTime}
+              and t.purchase_date &lt;= #{eTime}
+    </select>
+
+    <select id="queryShouMai" resultType="com.atguigu.jxc.domain.TongJi">
+            select t.`amount_payable` qian,t.`sale_date` `date`
+            from t_sale_list t
+            where
+                t.sale_date &gt;= #{sTime}
+              and t.sale_date &lt;= #{eTime}
+    </select>
+</mapper>
