@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.jxc.dao.PurchaseDao">
+
+    <insert id="savePurchaseList" useGeneratedKeys="true" keyProperty="purchaseListId" parameterType="com.atguigu.jxc.entity.PurchaseList">
+        insert into
+        t_purchase_list(purchase_number,amount_paid,amount_payable,purchase_date,remarks,state,supplier_id)
+        values
+        (#{purchaseNumber},#{amountPaid},#{amountPayable}
+        ,#{purchaseDate},#{remarks},#{state},#{supplierId})
+    </insert>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from t_purchase_list_goods
+        where purchase_list_id =  #{purchaseListId};
+    </delete>
+
+    <select id="goodsList" resultType="java.util.Map">
+        select
+            t.`purchase_list_goods_id` purchaseListGoodsId,
+            t.`goods_id` goodsId,t.`goods_code` goodsCode,
+            t.`goods_name` goodsName,t.`goods_model` goodsModel,
+            t.`goods_unit` goodsUnit,t.`goods_num` goodsNum,t.`price`,
+            t.`total`,t.`purchase_list_id` purchaseListId,t.`goods_type_id` goodsTypeId
+        from t_purchase_list_goods t
+        where t.purchase_list_id = #{purchaseListId}
+    </select>
+    <select id="count" resultType="com.atguigu.jxc.domain.CountVo">
+        select t1.`return_number` number,t1.`return_date` `date`,
+        t3.`supplier_name` supplierName,t2.`goods_code` code,t2.`goods_name` name,
+        t2.`goods_model` model,t4.`goods_type_name` goodsType,t2.`goods_unit` unit,
+        t2.`price`,t2.`goods_num` num,t2.`total`
+        from t_return_list t1
+        left join t_return_list_goods t2
+        on t1.`return_list_id` = t2.`return_list_id`
+        left join t_supplier t3
+        on t1.`supplier_id` = t3.`supplier_id`
+        left join t_goods_type t4
+        on t2.`goods_type_id` = t4.`goods_type_id`
+        <where>
+            <if test="goodsTypeId != null">
+                t4.`goods_type_id` like CONCAT('%', #{goodsTypeId} ,'%')
+            </if>
+            <if test="codeOrName != null">
+                and t2.`goods_code` like CONCAT('%', #{codeOrName} ,'%')
+                or t2.`goods_name` like CONCAT('%', #{codeOrName} ,'%')
+            </if>
+            <if test="sTime != null">
+                and t1.`return_date` &gt;= #{sTime}
+            </if>
+            <if test="eTime != null">
+                and t1.`return_date` &lt;= #{eTime}
+            </if>
+        </where>
+    </select>
+</mapper>
