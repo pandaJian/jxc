@@ -18,5 +18,5 @@ public interface SupplierService {
 
     ServiceVO delete(String ids);
 
-    ServiceVO<String> getComboboxList(String q);
+    String getComboboxList(String q);
 }

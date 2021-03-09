@@ -22,11 +22,15 @@ public class SupplierController {
     @Autowired
     private SupplierService supplierService;
 
-    @PostMapping
-    @ResponseBody
+    /**
+     * 颜敏烜 day01 1.0
+     * 查询供应商列表
+     * @param q
+     * @return
+     */
+    @PostMapping("/getComboboxList")
     @RequiresPermissions(value = "供应商管理")
-    public ServiceVO<String> getComboboxList(String q){
-
+    public String getComboboxList(String q){
         return supplierService.getComboboxList(q);
     }
 

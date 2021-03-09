@@ -7,10 +7,10 @@ import com.atguigu.jxc.entity.Log;
 import com.atguigu.jxc.entity.Supplier;
 import com.atguigu.jxc.service.SupplierService;
 import com.atguigu.jxc.service.LogService;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +25,8 @@ public class SupplierServiceImpl implements SupplierService {
     private LogService logService;
     @Autowired
     private SupplierDao supplierDao;
+
+    private Gson gson = new Gson();
 
 
     @Override
@@ -81,10 +83,12 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
-    public ServiceVO<String> getComboboxList(String q) {
+    public String getComboboxList(String q) {
 
         List<Supplier> suppliers = supplierDao.getComboboxList(q);
+        logService.save(new Log(Log.SELECT_ACTION,"查询供应商列表"));
+        String json = gson.toJson(suppliers);
 
-        return new ServiceVO<String>(SuccessCode.SUCCESS_CODE,SuccessCode.SUCCESS_MESS);
+        return json;
     }
 }

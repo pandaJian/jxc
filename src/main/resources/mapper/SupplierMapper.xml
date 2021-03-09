@@ -14,8 +14,13 @@
         <result column="remarks" property="remarks" jdbcType="VARCHAR" />
     </resultMap>
 
-    <select id="getComboboxList" resultType="java.lang.String">
-        select
+    <select id="getComboboxList" resultMap="BaseResultMap">
+        SELECT * 
+        FROM t_supplier
+        <if test="q != null and q != ''">
+            WHERE supplier_name
+            LIKE CONCAT('%', #{q} ,'%');
+        </if>
     </select>
 
     <select id="getSupplierList" resultMap="BaseResultMap">
