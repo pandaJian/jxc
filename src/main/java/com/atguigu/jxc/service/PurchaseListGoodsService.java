@@ -11,4 +11,6 @@ public interface PurchaseListGoodsService {
     Map<String, Object> list(String purchaseNumber, Integer supplierId, Integer state, String sTime, String eTime);
 
     Map<String, Object> goodsList(Integer purchaseListId);
+
+    ServiceVO delete(Integer purchaseListId);
 }

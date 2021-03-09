@@ -48,4 +48,10 @@
         </trim>
     </select>
 
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        DELETE
+        FROM t_purchase_list
+        WHERE purchase_list_id = #{purchaseListId}
+    </delete>
+
 </mapper>

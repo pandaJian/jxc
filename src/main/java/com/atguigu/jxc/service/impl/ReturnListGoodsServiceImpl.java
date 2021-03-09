@@ -1,9 +1,6 @@
 package com.atguigu.jxc.service.impl;
 
-import com.atguigu.jxc.dao.GoodsDao;
-import com.atguigu.jxc.dao.ReturnListDao;
-import com.atguigu.jxc.dao.ReturnListGoodsDao;
-import com.atguigu.jxc.dao.UserDao;
+import com.atguigu.jxc.dao.*;
 import com.atguigu.jxc.domain.ErrorCode;
 import com.atguigu.jxc.domain.ServiceVO;
 import com.atguigu.jxc.domain.SuccessCode;
@@ -16,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -32,6 +31,8 @@ public class ReturnListGoodsServiceImpl implements ReturnListGoodsService {
     private GoodsDao goodsDao;
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private SupplierDao supplierDao;
 
     Gson gson = new Gson();
 
@@ -63,5 +64,49 @@ public class ReturnListGoodsServiceImpl implements ReturnListGoodsService {
         }
         return new ServiceVO(ErrorCode.NULL_POINTER_CODE,ErrorCode.NULL_POINTER_MESS);
 
+    }
+
+    @Override
+    public Map<String, Object> list(String returnNumber, Integer supplierId, Integer state, String sTime, String eTime) {
+        List<ReturnList> returnLists = returnListDao.list(returnNumber, supplierId, state, sTime, eTime);
+        returnLists.forEach(returnList -> {
+            returnList.setSupplierName(supplierDao.getSupplierById(returnList.getSupplierId()).getSupplierName());
+            returnList.setTrueName(userDao.getUserById(1).getTrueName());
+            logService.save(new Log(Log.SELECT_ACTION,"查询退货清单列表:"+returnList.getReturnNumber()));
+        });
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("rows", returnLists);
+
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> goodsList(Integer returnListId) {
+
+        List<ReturnListGoods> returnListGoodsList = returnListGoodsDao.queryReturnListById(returnListId);
+
+        returnListGoodsList.forEach(returnListGoods -> {
+            logService.save(new Log(Log.SELECT_ACTION,"查询退货清单商品列表:"+returnListGoods.getGoodsId()));
+        });
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("rows", returnListGoodsList);
+
+        return map;
+    }
+
+    @Override
+    public ServiceVO delete(Integer returnListId) {
+
+        //TODO:两个删除应该保证原子性，添加事务
+        Integer i2 = returnListGoodsDao.deleteByReturnListId(returnListId);
+        logService.save(new Log(Log.DELETE_ACTION,"删除退货清单商品列表:"+returnListId));
+        Integer i1 = returnListDao.deleteById(returnListId);
+        logService.save(new Log(Log.DELETE_ACTION,"删除退货清单:"+returnListId));
+
+
+        return new ServiceVO(SuccessCode.SUCCESS_CODE,SuccessCode.SUCCESS_MESS);
+        //return new ServiceVO(ErrorCode.NULL_POINTER_CODE,ErrorCode.NULL_POINTER_MESS);
     }
 }

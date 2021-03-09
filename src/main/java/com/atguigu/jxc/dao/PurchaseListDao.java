@@ -15,4 +15,6 @@ public interface PurchaseListDao {
                              @Param("state") Integer state,
                              @Param("sTime") String sTime,
                              @Param("eTime") String eTime);
+
+    Integer deleteById(@Param("purchaseListId")Integer purchaseListId);
 }

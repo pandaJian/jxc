@@ -71,15 +71,39 @@ public class PurchaseListGoodsServiceImpl implements PurchaseListGoodsService {
         purchaseLists.forEach(purchaseList -> {
             purchaseList.setSupplierName(supplierDao.getSupplierById(purchaseList.getSupplierId()).getSupplierName());
             purchaseList.setTrueName(userDao.getUserById(1).getTrueName());
+            logService.save(new Log(Log.SELECT_ACTION,"查询进货清单列表:"+purchaseList.getPurchaseListId()));
         });
+
         Map<String, Object> map = new HashMap<>();
         map.put("rows", purchaseLists);
+
         return map;
     }
 
     @Override
     public Map<String, Object> goodsList(Integer purchaseListId) {
-        
-        return null;
+
+        List<PurchaseListGoods> purchaseListGoodsList =  purchaseListGoodsDao.queryPurchaseListById(purchaseListId);
+
+        purchaseListGoodsList.forEach(purchaseListGoods -> {
+            logService.save(new Log(Log.SELECT_ACTION,"查询进货清单商品列表:"+purchaseListGoods.getGoodsId()));
+        });
+        Map<String, Object> map = new HashMap<>();
+        map.put("rows", purchaseListGoodsList);
+
+        return map;
+    }
+
+    @Override
+    public ServiceVO delete(Integer purchaseListId) {
+
+        //TODO:两个删除应该保证原子性，添加事务
+        Integer i2 = purchaseListGoodsDao.deleteByPurchaseListId(purchaseListId);
+        logService.save(new Log(Log.DELETE_ACTION,"删除进货清单商品列表:"+purchaseListId));
+        Integer i1 = purchaseListDao.deleteById(purchaseListId);
+        logService.save(new Log(Log.DELETE_ACTION,"删除进货清单:"+purchaseListId));
+
+        return new ServiceVO(SuccessCode.SUCCESS_CODE,SuccessCode.SUCCESS_MESS);
+        //return new ServiceVO(ErrorCode.NULL_POINTER_CODE,ErrorCode.NULL_POINTER_MESS);
     }
 }

@@ -68,6 +68,21 @@ public class PurchaseListGoodsController {
     public Map<String,Object> goodsList(Integer purchaseListId){
 
         return purchaseListGoodsService.goodsList(purchaseListId);
-        //return null;
+    }
+    /**
+     * 颜敏烜 day02 3.3
+     * 进货单删除
+     *
+     * 请求URL：http://localhost:8080/purchaseListGoods/delete
+     * 请求参数：Integer purchaseListId
+     * 请求方式：POST
+     * 返回值类型：JSON
+     * 返回值：ServiceVO
+     */
+    @PostMapping("/delete")
+    @RequiresPermissions(value = "供应商管理")
+    public ServiceVO delete(Integer purchaseListId){
+
+        return purchaseListGoodsService.delete(purchaseListId);
     }
 }
